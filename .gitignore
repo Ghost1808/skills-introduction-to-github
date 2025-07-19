@@ -35,3 +35,41 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Performance optimization: Cache and temporary directories #
+############################################################
+node_modules/
+.npm/
+.cache/
+.parcel-cache/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build outputs and artifacts #
+##############################
+dist/
+build/
+out/
+.next/
+.nuxt/
+target/
+
+# Environment and configuration files #
+######################################
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Performance: Large files that shouldn't be in git #
+####################################################
+*.mov
+*.mp4
+*.avi
+*.wmv
+*.webm
+*.mkv

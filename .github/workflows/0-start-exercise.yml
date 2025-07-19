@@ -10,7 +10,6 @@ permissions:
   actions: write # Disable/enable workflows
   issues: write # Create issue and comment on issues
 
-
 env:
   STEP_1_FILE: ".github/steps/1-create-a-branch.md"
 
@@ -24,7 +23,6 @@ jobs:
       exercise-title: "Introduction to GitHub"
       intro-message: "If you are new to GitHub, you might find your fellow developers use ___**issues**___  to organize their work and collaborate. We will do the same! That's another lesson, but today, we will introduce you to the basics."
 
-
   post_next_step_content:
     name: Post next step content
     runs-on: ubuntu-latest
@@ -35,6 +33,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Optimize: Only fetch what we need
+          fetch-depth: 1
+          sparse-checkout: |
+            .github/steps/
+          sparse-checkout-cone-mode: false
 
       - name: Get response templates
         uses: actions/checkout@v4
@@ -42,6 +46,20 @@ jobs:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
           ref: v0.1.0
+          # Optimize: Only fetch what we need
+          fetch-depth: 1
+          sparse-checkout: |
+            markdown-templates/
+          sparse-checkout-cone-mode: false
+
+      # Optimize: Cache the exercise-toolkit to avoid repeated downloads
+      - name: Cache exercise-toolkit
+        uses: actions/cache@v4
+        with:
+          path: exercise-toolkit
+          key: exercise-toolkit-v0.1.0-${{ hashFiles('exercise-toolkit/**') }}
+          restore-keys: |
+            exercise-toolkit-v0.1.0-
 
       - name: Create comment - add step content
         run: |

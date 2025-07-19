@@ -38,7 +38,20 @@ jobs:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
           ref: v0.1.0
+          # Optimize: Only fetch what we need
+          fetch-depth: 1
+          sparse-checkout: |
+            markdown-templates/
+          sparse-checkout-cone-mode: false
 
+      # Optimize: Cache the exercise-toolkit to avoid repeated downloads
+      - name: Cache exercise-toolkit
+        uses: actions/cache@v4
+        with:
+          path: exercise-toolkit
+          key: exercise-toolkit-v0.1.0-${{ hashFiles('exercise-toolkit/**') }}
+          restore-keys: |
+            exercise-toolkit-v0.1.0-
 
       - name: Update comment - checking work
         run: |
